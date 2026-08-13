@@ -23,19 +23,21 @@
 html{scroll-behavior:smooth;background:var(--page)}
 body{margin:0;overflow-x:hidden;background:var(--page);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
 a{color:inherit}
-.visual-wrap{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;background:var(--map);overflow:hidden}
+.visual-wrap{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;background:var(--map);overflow:hidden;opacity:0;transition:opacity .18s ease}
+.visual-wrap.is-ready{opacity:1}
 .visual{position:absolute;inset:0;background:linear-gradient(180deg,#f6f8f9 0%,#edf2f4 100%)}
-.visual:after{content:"";position:absolute;top:0;right:0;bottom:0;width:40vw;border-left:1px solid rgba(23,58,82,.08);background:linear-gradient(90deg,rgba(244,246,248,0),rgba(244,246,248,.58) 28%,rgba(244,246,248,.94) 100%);pointer-events:none;z-index:5}
+.visual:after{content:"";position:absolute;top:0;right:0;bottom:0;width:38vw;border-left:1px solid rgba(23,58,82,.08);background:linear-gradient(90deg,rgba(244,246,248,0),rgba(244,246,248,.58) 28%,rgba(244,246,248,.94) 100%);pointer-events:none;z-index:5}
 #mapSvg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.dept,.latam{stroke:#fff;stroke-width:1.05;vector-effect:non-scaling-stroke;transition:fill .42s ease,opacity .3s ease,stroke .3s ease;cursor:default}
+.dept,.latam{stroke:#fff;stroke-width:1.05;vector-effect:non-scaling-stroke;transition:opacity .3s ease,stroke .3s ease;cursor:default}
 .dept:hover,.latam:hover{stroke:#394855;stroke-width:1.45}
 .inset-frame{fill:#fbfcfc;stroke:#98a7b1;stroke-width:1}
-.map-ui{position:absolute;z-index:20;left:30px;right:calc(40vw + 28px);top:42px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;pointer-events:none}
+.map-ui{position:absolute;z-index:20;left:30px;right:calc(38vw + 28px);top:42px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;pointer-events:none;transition:opacity .18s ease}
 .map-head{max-width:620px}
 .map-kicker{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:#6a7781;font-weight:600;margin-bottom:5px}
 .map-title{font-family:"Inter",system-ui,sans-serif;font-size:clamp(1.12rem,1.6vw,1.48rem);font-weight:650;line-height:1.18;letter-spacing:-.025em;color:#163549}
 .map-note{max-width:310px;color:#6f7d86;font-size:.75rem;line-height:1.42;text-align:right;padding-top:2px}
 .legend{position:absolute;z-index:20;left:30px;bottom:28px;max-width:min(680px,calc(60vw - 60px));padding:10px 12px;background:rgba(255,255,255,.95);border:1px solid #d9e0e4;border-radius:8px;box-shadow:0 4px 16px rgba(23,33,43,.05);pointer-events:none}
+.legend:empty{display:none}
 .legend-title{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:#687681;font-weight:600;margin-bottom:7px}
 .legend-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .legend-item{display:flex;align-items:center;gap:6px;color:#4f5d67;font-size:.69rem;white-space:nowrap}
@@ -45,7 +47,7 @@ a{color:inherit}
 .tooltip{position:fixed;z-index:5000;pointer-events:none;opacity:0;transform:translate(-50%,-115%);padding:9px 11px;border-radius:7px;background:#17212b;color:white;box-shadow:0 8px 24px rgba(23,33,43,.18);font-size:.75rem;min-width:155px;max-width:270px}
 .tooltip b{display:block;margin-bottom:3px;font-family:"Inter",sans-serif;font-size:.79rem}
 .tooltip span{color:#d8dfe3}
-.story-rail{position:relative;z-index:50;width:40vw;margin-left:60vw;padding:0 clamp(24px,3vw,52px) 20vh clamp(22px,2.8vw,44px);pointer-events:none}
+.story-rail{position:relative;z-index:50;width:38vw;margin-left:62vw;padding:0 clamp(24px,3vw,52px) 20vh clamp(22px,2.8vw,44px);pointer-events:none}
 .site-nav{position:fixed;top:0;left:0;right:0;z-index:3000;display:flex;align-items:center;gap:16px;padding:10px 18px 8px;background:transparent;pointer-events:none}
 .site-nav a{color:rgba(23,58,82,.76);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:11px;font-weight:500;line-height:1;letter-spacing:.02em;text-decoration:none;white-space:nowrap;pointer-events:auto;transition:color .16s ease,opacity .16s ease}
 .site-nav a:hover,.site-nav a:focus-visible{color:#173a52;text-decoration:underline;text-underline-offset:3px}
@@ -63,11 +65,9 @@ a{color:inherit}
 .story-panel h1,.story-panel h2{font-family:"Inter",system-ui,sans-serif;color:#17212b;margin:0 0 14px;line-height:1.08;letter-spacing:-.035em}
 .story-panel h1{font-size:clamp(2rem,3.2vw,3.4rem);font-weight:650;line-height:1.03}
 .story-panel h2{font-size:clamp(1.48rem,2.1vw,2.25rem);font-weight:650}
-.deck{font-size:1.03rem!important;line-height:1.45!important;color:#30404c!important;font-weight:500;margin-bottom:19px!important}
 .story-panel p{margin:0 0 13px;color:#52606b;font-size:clamp(.95rem,1.02vw,1.03rem);line-height:1.6}
 .story-panel p:last-child{margin-bottom:0}
 .story-panel strong{color:#20313e;font-weight:600}
-.story-callout{margin:18px 0 0;padding:12px 13px;border-left:3px solid #7d929f;background:#f5f7f8;color:#485863;font-size:.86rem;line-height:1.5}
 .metricrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:17px 0 2px}
 .metric{padding:10px 10px 9px;border:1px solid #e0e5e8;background:#f8fafb;border-radius:7px}
 .metric b{display:block;font-family:"Inter",sans-serif;color:#1d3444;font-size:1.03rem;line-height:1.05;font-variant-numeric:tabular-nums}
@@ -77,12 +77,12 @@ a{color:inherit}
 .scrollcue.is-hidden{opacity:0;transform:translateY(6px)}
 .scrollcue svg{width:13px;height:13px;animation:bob 1.5s ease-in-out infinite} @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 .error{position:fixed;z-index:9000;left:24px;top:24px;max-width:520px;padding:12px 14px;border-radius:7px;background:#fff3f1;color:#7f322d;border:1px solid #e6b9b5;display:none}
-.brandline{position:fixed;left:30px;top:calc(100vh - 30px);z-index:21;transform:translateY(-100%);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:#829099;pointer-events:none}
-@media(max-width:1040px){.story-rail{width:42vw;margin-left:58vw}.visual:after{width:42vw}.map-ui{right:calc(42vw + 22px)}}
-@media (max-width:760px), (orientation:portrait) and (max-width:1100px){
-  :root{--mobile-map-h:clamp(300px,43svh,390px)}
+.brandline{position:fixed;left:30px;top:calc(100vh - 30px);z-index:21;transform:translateY(-100%);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:#829099;pointer-events:none;transition:opacity .18s ease}
+@media(max-width:1100px){.story-rail{width:40vw;margin-left:60vw}.visual:after{width:40vw}.map-ui{right:calc(40vw + 22px)}}
+@media (max-width:760px), (orientation:portrait) and (max-width:1100px), (orientation:landscape) and (max-height:520px) and (max-width:950px){
+  :root{--mobile-map-h:clamp(330px,46svh,430px)}
   body{overflow-y:auto!important;overflow-x:hidden!important}
-  .visual-wrap{position:fixed!important;inset:0 auto auto 0!important;width:100%!important;height:var(--mobile-map-h)!important;min-height:0!important;z-index:20!important;overflow:hidden!important;box-shadow:0 8px 22px rgba(23,33,43,.10)}
+  .visual-wrap{position:fixed!important;inset:0 auto auto 0!important;width:100%!important;height:var(--mobile-map-h)!important;min-height:0!important;z-index:200!important;overflow:hidden!important;box-shadow:0 8px 22px rgba(23,33,43,.10);pointer-events:none}
   .visual{width:100%!important;height:var(--mobile-map-h)!important;min-height:0!important;overflow:hidden!important}
   #mapSvg{width:100%!important;height:100%!important}
   .visual:after{display:none}
@@ -93,26 +93,60 @@ a{color:inherit}
   .story-panel h1{font-size:clamp(1.95rem,9vw,2.7rem)}
   .story-panel h2{font-size:clamp(1.4rem,7vw,1.95rem)}
   .authorline img{width:30px;height:30px}
-  .map-ui{left:10px;right:10px;top:38px}
-  .map-head{max-width:42%}
+  .map-ui{left:10px;top:38px}
+  .map-head{max-width:100%}
   .map-kicker{font-size:.54rem}
   .map-title{font-size:.92rem}
   .map-note{display:none}
-  .legend{left:10px;bottom:10px;max-width:calc(100vw - 20px);padding:7px 9px}
+  .legend{left:10px;bottom:8px;max-width:calc(100vw - 20px);padding:5px 7px}
   .legend-title{display:none}
-  .legend-item{font-size:.59rem}
-  .gradient-bar{width:120px;height:8px}
-  .gradient-legend{font-size:.59rem}
+  .legend-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px}
+  .legend-item{font-size:.54rem;line-height:1.18;white-space:normal;min-width:0;align-items:flex-start}
+  .swatch{flex:0 0 auto;margin-top:1px}
+  .gradient-bar{width:104px;height:8px}
+  .gradient-legend{font-size:.54rem;gap:6px}
   .brandline{display:none}
   .scrollcue{display:none}
   .metricrow{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (orientation:portrait) and (min-width:761px) and (max-width:1100px){
-  :root{--mobile-map-h:clamp(330px,42svh,470px)}
+  :root{--mobile-map-h:clamp(360px,44svh,500px)}
   .story-rail{padding-left:18px!important;padding-right:18px!important}
   .story-panel{width:min(100%,680px)!important}
-  .map-head{max-width:48%!important}
+  .map-head{max-width:100%!important}
   .legend{max-width:calc(100vw - 20px)!important}
+}
+
+@media (orientation:landscape) and (max-height:520px) and (max-width:950px){
+  :root{--mobile-map-h:clamp(250px,70svh,310px)}
+  .story-rail{padding-top:calc(var(--mobile-map-h) + 24px)}
+  .story-step,.story-step-intro,.story-step-end{min-height:82svh;padding-bottom:8svh}
+  .map-ui{top:29px}
+  .map-kicker{font-size:.47rem}
+  .map-title{font-size:.76rem;line-height:1.12}
+  .legend{bottom:5px;padding:4px 6px}
+  .legend-item,.gradient-legend{font-size:.48rem}
+  .gradient-bar{width:84px;height:7px}
+}
+
+/* Publication layout: on desktop, auxiliary content lives in a dedicated cartographic side strip.
+   The mainland projection never enters that strip, so insets/legend cannot cover Colombia. */
+.visual.map-compact .map-note{display:none}
+.visual.map-compact .map-head{max-width:100%}
+.visual.map-compact .map-title{font-size:1rem;line-height:1.14}
+@media(min-width:761px) and (orientation:landscape){
+  .legend.is-side-legend{bottom:auto;max-width:none}
+  .legend.is-side-legend .legend-row{display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+  .legend.is-side-legend .legend-item{white-space:normal;line-height:1.25}
+  .legend.is-side-legend .gradient-legend{display:grid;grid-template-columns:auto 1fr auto;gap:5px;width:100%}
+  .legend.is-side-legend .gradient-bar{width:100%;min-width:0}
+}
+@media(max-width:360px){.map-title{font-size:.84rem}.map-kicker{font-size:.49rem}}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .visual-wrap,.map-ui,.brandline,.dept,.latam,.scrollcue{transition:none!important}
+  .scrollcue svg{animation:none!important}
 }
 @media(max-width:430px){.metricrow{grid-template-columns:1fr}.story-panel{padding:18px 16px}.site-nav{gap:9px}.site-nav a{font-size:9px}}
 @media(max-width:360px){.site-nav{gap:9px}.site-nav a{font-size:9px}}
@@ -192,36 +226,166 @@ const DANE='https://geoportal.dane.gov.co/mparcgis/rest/services/Divipola/Cache_
 const FALLBACK='https://cdn.jsdelivr.net/gh/santiblanko/colombia.geojson@master/depto.json';
 const LATAM='https://cdn.jsdelivr.net/gh/datasets/geo-countries@master/data/countries.geojson';
 const LATAM_FALLBACK='https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json';
-const svg=d3.select('#mapSvg'),tip=document.getElementById('tooltip'),errorBox=document.getElementById('error'),legend=document.getElementById('legend'),mapTitle=document.getElementById('mapTitle'),mapKicker=document.getElementById('mapKicker'),mapNote=document.getElementById('mapNote'),mapUI=document.querySelector('.map-ui'),brandLine=document.querySelector('.brandline');
+const svg=d3.select('#mapSvg'),tip=document.getElementById('tooltip'),errorBox=document.getElementById('error'),legend=document.getElementById('legend'),mapTitle=document.getElementById('mapTitle'),mapKicker=document.getElementById('mapKicker'),mapNote=document.getElementById('mapNote'),mapUI=document.querySelector('.map-ui'),brandLine=document.querySelector('.brandline'),visualWrap=document.querySelector('.visual-wrap'),storyRail=document.querySelector('.story-rail'),scrollCue=document.getElementById('scrollCue');
 let geojson,latamGeo,features=[],mainland=[],archDept=null,sanAndresIsland=null,providenciaIsland=null;
-let mainProjection,pathMain,saProjection,provProjection,pathSA,pathProv,latamProjection,pathLatam,activeStep=0,finalTransform='';
+let mainProjection,pathMain,saProjection,provProjection,pathSA,pathProv,latamProjection,pathLatam,activeStep=0,desiredStep=0,renderedStep=-1,finalTransform='',mapReady=false,regionalReady=false,lastLayoutSignature='';
 let gLatam,gMain,gInsets,gFinalArch;
 const KNOWN=new Set(Object.values(V).flatMap(o=>Object.keys(o)));
 const LATAM_NAMES=new Set(['Argentina','Bolivia','Brazil','Brasil','Chile','Colombia','Costa Rica','Cuba','Dominican Republic','Ecuador','El Salvador','Guatemala','Haiti','Honduras','Mexico','Nicaragua','Panama','Paraguay','Peru','Uruguay','Venezuela','Belize','Guyana','Suriname','Jamaica','Trinidad and Tobago','Bahamas','Barbados','Antigua and Barbuda','Dominica','Grenada','Saint Lucia','Saint Vincent and the Grenadines','Saint Kitts and Nevis']);
 function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,' ').trim().toLowerCase()}
 function cname(f){const p=f.properties||{},c=[p.NOM_DPTO,p.DPTO_CNMBRE,p.DEPARTAMEN,p.departamen,p.NOMBRE_DPT,p.DEPARTAMENTO,p.DPTO,p.name,p.NAME_1];let raw=c.find(v=>typeof v==='string'&&v.trim())||Object.values(p).find(v=>typeof v==='string'&&v.trim())||'';let n=norm(raw);if(n.includes('san andres')||n.includes('providencia')||n.includes('archipielago'))return'San Andrés y Providencia';if(n.includes('bogota'))return'Bogotá D.C.';for(const k of KNOWN)if(norm(k)===n)return k;return raw}
 function countryName(f){const p=f.properties||{};const candidates=[p.ADMIN,p.name,p.NAME,p.SOVEREIGNT,p.COUNTRY,p.NAME_LONG,p.formal_en,p.brk_name];return candidates.find(v=>typeof v==='string'&&v.trim())||''}
-async function fetchAny(urls){const jobs=urls.map(async u=>{const r=await fetch(u,{cache:'force-cache'});if(!r.ok)throw Error('HTTP '+r.status);const g=await r.json();if(!g?.features?.length)throw Error('Geometría vacía');return g});try{return await Promise.any(jobs)}catch(e){console.warn(e);throw Error('No fue posible cargar la geometría.')}}
+async function fetchAny(urls){
+  const controllers=urls.map(()=>new AbortController());
+  const jobs=urls.map(async(u,i)=>{const r=await fetch(u,{cache:'force-cache',signal:controllers[i].signal});if(!r.ok)throw Error('HTTP '+r.status);const g=await r.json();if(!g?.features?.length)throw Error('Geometría vacía');return g});
+  try{const winner=await Promise.any(jobs);controllers.forEach(c=>c.abort());return winner}catch(e){console.warn(e);throw Error('No fue posible cargar la geometría.')}
+}
 function polygonPieces(feature){const g=feature?.geometry;if(!g)return[];if(g.type==='MultiPolygon')return g.coordinates.map(coords=>({type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:coords}}));if(g.type==='Polygon')return[{type:'Feature',properties:{},geometry:g}];return[]}
 function multiFeature(parts){if(!parts.length)return null;return{type:'Feature',properties:{},__name:'San Andrés y Providencia',geometry:{type:'MultiPolygon',coordinates:parts.map(p=>p.geometry.coordinates)}}}
 function splitArchipelago(feature){const pieces=polygonPieces(feature),saTarget=[-81.72,12.55],provTarget=[-81.37,13.35];const dist=(p,t)=>{const c=d3.geoCentroid(p),dx=c[0]-t[0],dy=c[1]-t[1];return Math.hypot(dx,dy)};let sa=pieces.filter(p=>dist(p,saTarget)<.28),prov=pieces.filter(p=>dist(p,provTarget)<.28);if(!sa.length&&pieces.length)sa=[...pieces].sort((a,b)=>dist(a,saTarget)-dist(b,saTarget))[0];if(!prov.length&&pieces.length)prov=[...pieces].sort((a,b)=>dist(a,provTarget)-dist(b,provTarget))[0];return{sa:multiFeature(sa),prov:multiFeature(prov)}}
 function initGroups(){gLatam=svg.append('g').attr('class','latam-layer').style('opacity',0);gMain=svg.append('g').attr('class','dept-layer');gFinalArch=svg.append('g').attr('class','final-arch-layer').style('opacity',0);gInsets=svg.append('g').attr('class','inset-layer')}
-function isStackedLayout(){return window.matchMedia('(max-width:760px), (orientation:portrait) and (max-width:1100px)').matches}
-function resizeMap(){if(!features.length)return;const node=svg.node(),rect=node.getBoundingClientRect();const W=Math.max(1,rect.width||innerWidth),H=Math.max(1,rect.height||innerHeight),mobile=isStackedLayout(),mapW=mobile?W:W*.60;svg.attr('viewBox',`0 0 ${W} ${H}`);
-  const top=mobile?50:70,left=mobile?14:40,bottom=mobile?42:44;
-  const fc={type:'FeatureCollection',features:mainland};mainProjection=d3.geoMercator().fitExtent([[left,top],[mapW-(mobile?14:40),H-bottom]],fc);pathMain=d3.geoPath(mainProjection);gMain.selectAll('.dept.main').attr('d',pathMain);
-  if(sanAndresIsland){const iw=mobile?106:158,ih=mobile?72:102;const provW=mobile?78:108;const provX=mobile?W-provW-10:mapW-provW-28;const ix=provX-iw-(mobile?7:10),iy=mobile?72:64;saProjection=d3.geoMercator().fitExtent([[ix+13,iy+12],[ix+iw-13,iy+ih-12]],sanAndresIsland);pathSA=d3.geoPath(saProjection);gInsets.select('.frame-sa').attr('x',ix).attr('y',iy).attr('width',iw).attr('height',ih).attr('rx',5);gInsets.select('.island-sa').attr('d',pathSA)}
-  if(providenciaIsland){const iw=mobile?78:108,ih=mobile?58:78,ix=mobile?W-iw-10:mapW-iw-28,iy=mobile?82:76;provProjection=d3.geoMercator().fitExtent([[ix+11,iy+10],[ix+iw-11,iy+ih-10]],providenciaIsland);pathProv=d3.geoPath(provProjection);gInsets.select('.frame-prov').attr('x',ix).attr('y',iy).attr('width',iw).attr('height',ih).attr('rx',5);gInsets.select('.island-prov').attr('d',pathProv)}
-  if(latamGeo){const latW=mobile?W:mapW;latamProjection=d3.geoMercator().fitExtent([[mobile?8:18,mobile?26:56],[latW-(mobile?8:18),H-(mobile?16:18)]],latamGeo);pathLatam=d3.geoPath(latamProjection);gLatam.selectAll('.latam').attr('d',pathLatam);if(archDept)gFinalArch.select('.arch-final').attr('d',pathLatam(archDept));const ref=[-74,4];const p0=mainProjection(ref),p1=latamProjection(ref),s=latamProjection.scale()/mainProjection.scale();finalTransform=`translate(${p1[0]-s*p0[0]},${p1[1]-s*p0[1]}) scale(${s})`;if(activeStep===7){gMain.attr('transform',finalTransform)}}
+function isStackedLayout(){return window.matchMedia('(max-width:760px), (orientation:portrait) and (max-width:1100px), (orientation:landscape) and (max-height:520px) and (max-width:950px)').matches}
+function isLandscapePhone(){return window.matchMedia('(orientation:landscape) and (max-height:520px) and (max-width:950px)').matches}
+function layoutConstants(W,H,mobile){
+  const landscapePhone=mobile&&isLandscapePhone();
+  return{
+    landscapePhone,
+    left:mobile?12:34,
+    gap:mobile?8:16
+  };
+}
+function insetMetrics(W,mapW,mobile,compact=false){
+  // One invariant everywhere: San Andrés left, Providencia right.
+  let saW,saH,prW,prH,gap,margin;
+  if(mobile){
+    if(W<=360){saW=68;saH=46;prW=56;prH=42;gap=6;margin=8}
+    else if(W<=430){saW=78;saH=50;prW=62;prH=44;gap=7;margin=9}
+    else if(W<=760){saW=90;saH=58;prW=70;prH=50;gap=8;margin=10}
+    else{saW=106;saH=66;prW=80;prH=56;gap=9;margin=12}
+  }else if(compact){
+    saW=90;saH=60;prW=64;prH=50;gap=7;margin=10;
+  }else{
+    saW=108;saH=72;prW=76;prH=58;gap=8;margin=12;
+  }
+  const total=saW+gap+prW;
+  return{saW,saH,prW,prH,gap,margin,total};
+}
+function desktopLayout(W,H,mapW){
+  const compact=mapW<720||H<650;
+  const I=insetMetrics(W,mapW,false,compact);
+  // The side strip is independent of the active step. Its width is sufficient
+  // for both island frames side-by-side and for a vertically wrapped legend.
+  const sideMin=I.total+I.margin*2;
+  const sideW=Math.min(Math.max(sideMin,compact?184:226),Math.max(sideMin,mapW*.30));
+  const sideX=mapW-sideW;
+  const mainLeft=34;
+  const mainRight=Math.max(mainLeft+250,sideX-18);
+  const mainTop=compact?132:118;
+  const mainBottom=Math.max(mainTop+220,H-44);
+  const insetTop=compact?52:56;
+  const saX=sideX+(sideW-I.total)/2;
+  const prX=saX+I.saW+I.gap;
+  return{compact,I,sideW,sideX,mainLeft,mainRight,mainTop,mainBottom,insetTop,saX,prX};
+}
+function mobileLayout(W,H){
+  const L=layoutConstants(W,H,true);
+  const I=L.landscapePhone?{saW:82,saH:50,prW:62,prH:44,gap:7,margin:10,total:151}:insetMetrics(W,W,true,false);
+  const pairX=Math.max(I.margin,W-I.margin-I.total);
+  const insetTop=L.landscapePhone?27:36;
+  const insetBottom=insetTop+Math.max(I.saH,I.prH);
+  const titleReserve=L.landscapePhone?76:(W<=360?104:96);
+  const mainTop=Math.max(titleReserve,insetBottom+7);
+  // Fixed reserve, based only on viewport width—not on which legend happens to be visible.
+  const legendReserve=L.landscapePhone?48:(W<=430?64:70);
+  const mainBottom=Math.max(mainTop+90,H-legendReserve);
+  return{L,I,pairX,insetTop,mainTop,mainBottom,legendReserve};
+}
+function resizeMap(force=false){
+  if(!features.length||!gMain)return;
+  const node=svg.node(),rect=node.getBoundingClientRect();
+  const W=Math.max(1,rect.width||innerWidth),H=Math.max(1,rect.height||innerHeight),mobile=isStackedLayout();
+  const railLeft=mobile?W:Math.max(320,Math.min(W,storyRail.getBoundingClientRect().left));
+  const mapW=mobile?W:railLeft;
+  const signature=[Math.round(W),Math.round(H),Math.round(mapW),mobile?1:0].join('|');
+  if(!force&&signature===lastLayoutSignature)return;
+  lastLayoutSignature=signature;
+  svg.attr('viewBox',`0 0 ${W} ${H}`);
+
+  let mainLeft,mainRight,mainTop,mainBottom,saX,prX,insetTop,I;
+  if(mobile){
+    const M=mobileLayout(W,H);I=M.I;mainLeft=12;mainRight=W-12;mainTop=M.mainTop;mainBottom=M.mainBottom;saX=M.pairX;prX=saX+I.saW+I.gap;insetTop=M.insetTop;
+    mapUI.style.left='10px';mapUI.style.top=M.L.landscapePhone?'29px':'38px';
+    mapUI.style.right=Math.max(10,W-(saX-M.L.gap))+'px';
+    mapNote.style.display='none';
+    legend.classList.remove('is-side-legend');
+    legend.style.left='10px';legend.style.right='auto';legend.style.top='auto';legend.style.bottom=M.L.landscapePhone?'5px':'8px';legend.style.width='auto';legend.style.maxWidth='calc(100vw - 20px)';
+    document.querySelector('.visual').classList.remove('map-compact');
+  }else{
+    const D=desktopLayout(W,H,mapW);I=D.I;mainLeft=D.mainLeft;mainRight=D.mainRight;mainTop=D.mainTop;mainBottom=D.mainBottom;saX=D.saX;prX=D.prX;insetTop=D.insetTop;
+    const visual=document.querySelector('.visual');visual.classList.toggle('map-compact',D.compact||mainRight-mainLeft<650);
+    mapUI.style.left='30px';mapUI.style.top='42px';mapUI.style.right=(W-mainRight+12)+'px';
+    mapNote.style.display=(mainRight-mainLeft>=720)?'':'none';
+    // The legend lives in the same dedicated side strip as the insets, but lower down.
+    // Its position is invariant across narrative steps; only its HTML changes.
+    legend.classList.add('is-side-legend');
+    legend.style.left=(D.sideX+12)+'px';legend.style.right='auto';legend.style.top='auto';legend.style.bottom='28px';legend.style.width=Math.max(120,D.sideW-24)+'px';legend.style.maxWidth='none';
+  }
+
+  // MASTER PROJECTION: this is the only projection used by steps 0–6.
+  // It depends exclusively on viewport geometry, never on title/legend contents or activeStep.
+  const fc={type:'FeatureCollection',features:mainland};
+  mainProjection=d3.geoMercator().fitExtent([[mainLeft,mainTop],[mainRight,mainBottom]],fc);
+  pathMain=d3.geoPath(mainProjection);
+  gMain.selectAll('.dept.main').attr('d',pathMain);
+
+  if(sanAndresIsland){
+    const sy=insetTop;
+    saProjection=d3.geoMercator().fitExtent([[saX+8,sy+7],[saX+I.saW-8,sy+I.saH-7]],sanAndresIsland);pathSA=d3.geoPath(saProjection);
+    gInsets.select('.frame-sa').attr('x',saX).attr('y',sy).attr('width',I.saW).attr('height',I.saH).attr('rx',5);
+    gInsets.select('.island-sa').attr('d',pathSA);
+  }
+  if(providenciaIsland){
+    const py=insetTop+(Math.max(I.saH,I.prH)-I.prH)/2;
+    provProjection=d3.geoMercator().fitExtent([[prX+7,py+6],[prX+I.prW-7,py+I.prH-6]],providenciaIsland);pathProv=d3.geoPath(provProjection);
+    gInsets.select('.frame-prov').attr('x',prX).attr('y',py).attr('width',I.prW).attr('height',I.prH).attr('rx',5);
+    gInsets.select('.island-prov').attr('d',pathProv);
+  }
+
+  if(latamGeo&&regionalReady){
+    const latW=mobile?W:mapW;
+    const latTop=mobile?(isLandscapePhone()?20:26):42;
+    const finalLegendReserve=mobile?mobileLayout(W,H).legendReserve:102;
+    const latBottom=Math.max(latTop+120,H-finalLegendReserve);
+    latamProjection=d3.geoMercator().fitExtent([[mobile?8:16,latTop],[latW-(mobile?8:16),latBottom]],latamGeo);pathLatam=d3.geoPath(latamProjection);
+    gLatam.selectAll('.latam').attr('d',pathLatam);
+    if(archDept)gFinalArch.select('.arch-final').attr('d',pathLatam(archDept));
+
+    // Exact affine equivalence between two Mercator projections with identical
+    // center/rotation: x1 = s*x0 + (t1 - s*t0). No sampled reference point.
+    const s=latamProjection.scale()/mainProjection.scale();
+    const t0=mainProjection.translate(),t1=latamProjection.translate();
+    finalTransform=`translate(${t1[0]-s*t0[0]},${t1[1]-s*t0[1]}) scale(${s})`;
+    if(activeStep===7)gMain.attr('transform',finalTransform);
+  }
 }
 function initMap(){initGroups();features=geojson.features.map(f=>(f.__name=cname(f),f));archDept=features.find(f=>f.__name==='San Andrés y Providencia')||null;mainland=features.filter(f=>f!==archDept);if(archDept){const split=splitArchipelago(archDept);sanAndresIsland=split.sa;providenciaIsland=split.prov}
   gMain.selectAll('path').data(mainland).join('path').attr('class','dept main').attr('fill',getFillNeutral).on('mousemove',(e,d)=>showTip(e,d)).on('mouseleave',()=>tip.style.opacity=0);
   if(sanAndresIsland){gInsets.append('rect').attr('class','inset-frame frame-sa');gInsets.append('path').datum(sanAndresIsland).attr('class','dept inset island-sa').attr('fill',getFillNeutral).on('mousemove',(e,d)=>showTip(e,d)).on('mouseleave',()=>tip.style.opacity=0)}
   if(providenciaIsland){gInsets.append('rect').attr('class','inset-frame frame-prov');gInsets.append('path').datum(providenciaIsland).attr('class','dept inset island-prov').attr('fill',getFillNeutral).on('mousemove',(e,d)=>showTip(e,d)).on('mouseleave',()=>tip.style.opacity=0)}
   if(archDept)gFinalArch.append('path').datum(archDept).attr('class','dept arch-final').attr('fill','#1b4d6a').attr('stroke','#fff').attr('stroke-width',1.05);
-  resizeMap();setStep(0,true)
+  mapReady=true;resizeMap(true);renderStep(desiredStep,true,true);syncVisualReady();if(latamGeo&&!regionalReady)initLatamLayer()
 }
-function initLatamLayer(){if(!latamGeo||!gLatam)return;const latamFeatures=(latamGeo.features||[]).filter(f=>{const n=norm(countryName(f));return[...LATAM_NAMES].some(x=>norm(x)===n)}).map(f=>(f.__country=countryName(f),f));latamGeo={type:'FeatureCollection',features:latamFeatures};gLatam.selectAll('path').data(latamFeatures).join('path').attr('class','latam').attr('fill',d=>norm(d.__country)==='colombia'?'#1b4d6a':'#cfd6db').attr('opacity',.96).on('mousemove',(e,d)=>showLatamTip(e,d)).on('mouseleave',()=>tip.style.opacity=0);resizeMap();if(activeStep===7)applyFinalState(true,true)}
+function initLatamLayer(){
+  if(!latamGeo||!gLatam||regionalReady)return;
+  const allLatamFeatures=(latamGeo.features||[]).filter(f=>{const n=norm(countryName(f));return[...LATAM_NAMES].some(x=>norm(x)===n)}).map(f=>(f.__country=countryName(f),f));
+  // Keep Colombia in the FeatureCollection ONLY to define the regional extent.
+  // It is deliberately not rendered from this dataset. The visible Colombia
+  // in step 7 is the same DANE departmental geometry transformed from gMain.
+  latamGeo={type:'FeatureCollection',features:allLatamFeatures};
+  const neighbors=allLatamFeatures.filter(f=>norm(f.__country)!=='colombia');
+  gLatam.selectAll('path').data(neighbors).join('path').attr('class','latam').attr('fill','#cfd6db').attr('opacity',.96).on('mousemove',(e,d)=>showLatamTip(e,d)).on('mouseleave',()=>tip.style.opacity=0);
+  regionalReady=true;resizeMap(true);if(desiredStep===7)renderStep(7,true,true);syncVisualReady();
+}
 function getFillNeutral(){return'#cfd8dc'}
 const seq=d3.scaleQuantile().domain(Object.values(V.a)).range(['#e8f0ef','#c6dcda','#91bbb6','#5f9890','#2d756b']);
 const povLim=Math.max(...Object.values(V.b).map(Math.abs)),povScale=d3.scaleLinear().domain([-povLim,0,povLim]).range(['#4c8065','#edf0f1','#b44b43']).clamp(true);
@@ -241,14 +405,73 @@ const META=[
 ];
 function legendHTML(k){if(k==='n')return'<div class="legend-title">Base cartográfica</div><div class="legend-row"><span class="legend-item"><i class="swatch" style="background:#cfd8dc"></i>Departamentos de Colombia</span></div>';if(k==='latam')return'<div class="legend-title">Escala regional</div><div class="legend-row"><span class="legend-item"><i class="swatch" style="background:#1b4d6a"></i>Colombia</span><span class="legend-item"><i class="swatch" style="background:#cfd6db"></i>Resto de América Latina y el Caribe</span></div>';if(k==='a')return'<div class="legend-title">Recaudo real por habitante</div><div class="gradient-legend"><span>Menor</span><span class="gradient-bar" style="background:linear-gradient(90deg,#e8f0ef,#c6dcda,#91bbb6,#5f9890,#2d756b)"></span><span>Mayor</span></div>';if(k==='b')return'<div class="legend-title">Cambio en pobreza monetaria</div><div class="gradient-legend"><span>Mayor reducción</span><span class="gradient-bar" style="background:linear-gradient(90deg,#4c8065,#edf0f1 50%,#b44b43)"></span><span>Aumento</span></div>';if(k==='c')return'<div class="legend-title">Tendencia de homicidios</div><div class="gradient-legend"><span>Desciende</span><span class="gradient-bar" style="background:linear-gradient(90deg,#4c8065,#e8ecee 50%,#b44b43)"></span><span>Aumenta</span></div>';const sets={d:[['#a84b47','Pobreza alta · informalidad alta'],['#54806d','Pobreza baja · informalidad baja'],['#766a8c','Pobreza alta · informalidad baja'],['#b87437','Pobreza baja · informalidad alta']],e:[['#4c8065','Mejoran ambas'],['#b87437','Pobreza mejora · violencia empeora'],['#527c9c','Pobreza empeora · violencia mejora'],['#a84b47','Empeoran ambas']],f:[['#4c8065','Mejoran ambas'],['#b87437','Fiscal mejora · pobreza empeora'],['#527c9c','Fiscal cae · pobreza mejora'],['#a84b47','Empeoran ambas']]};return'<div class="legend-title">'+(k==='d'?'Relación entre dos subindicadores':'Trayectoria combinada')+'</div><div class="legend-row">'+sets[k].map(x=>`<span class="legend-item"><i class="swatch" style="background:${x[0]}"></i>${x[1]}</span>`).join('')+'</div>'}
 function describe(n,s){const v=value(n,s);if(v==null)return'Sin dato comparable';if(s===1)return'$'+Math.round(v/1000).toLocaleString('es-CO')+' mil de 2020 por habitante';if(s===2)return(v>0?'+':'')+v.toFixed(1).replace('.',',')+' p.p. entre 2021 y 2024';if(s===3)return(v>0?'+':'')+v.toFixed(2).replace('.',',')+' puntos/año';const L4=['Pobreza alta · informalidad alta','Pobreza baja · informalidad baja','Pobreza alta · informalidad baja','Pobreza baja · informalidad alta'],L5=['Pobreza mejora · homicidios mejoran','Pobreza mejora · homicidios empeoran','Pobreza empeora · homicidios mejoran','Pobreza empeora · homicidios empeoran'],L6=['Recaudo mejora · pobreza mejora','Recaudo mejora · pobreza empeora','Recaudo cae · pobreza mejora','Recaudo cae · pobreza empeora'];return(s===4?L4:s===5?L5:L6)[v]}
-function showTip(e,d){const n=d.__name||'San Andrés y Providencia';tip.innerHTML=`<b>${n}</b><span>${describe(n,activeStep)}</span>`;tip.style.left=e.clientX+'px';tip.style.top=e.clientY+'px';tip.style.opacity=1}
-function showLatamTip(e,d){const n=d.__country;tip.innerHTML=`<b>${n}</b>`;tip.style.left=e.clientX+'px';tip.style.top=e.clientY+'px';tip.style.opacity=1}
-function applyFinalState(final,now=false){const dur=now?0:1100;if(final){gLatam.interrupt().transition().duration(dur).style('opacity',1);gInsets.interrupt().transition().duration(Math.min(dur,450)).style('opacity',0);gFinalArch.interrupt().transition().delay(now?0:350).duration(now?0:550).style('opacity',1);gMain.interrupt().transition().duration(dur).ease(d3.easeCubicInOut).attr('transform',finalTransform).selectAll('.dept.main').attr('fill','#1b4d6a');mapUI.style.opacity='0'}else{gLatam.interrupt().transition().duration(now?0:360).style('opacity',0);gFinalArch.interrupt().transition().duration(now?0:250).style('opacity',0);gInsets.interrupt().transition().delay(now?0:300).duration(now?0:350).style('opacity',1);gMain.interrupt().transition().duration(dur).ease(d3.easeCubicInOut).attr('transform',null);mapUI.style.opacity='1'}}
-function setStep(s,now=false){activeStep=s;const m=META[s];if(s===0){legend.innerHTML='';mapKicker.textContent='';mapTitle.textContent='';mapNote.textContent='';applyFinalState(false,now);mapUI.style.opacity='0';brandLine.style.opacity='0';const sel=svg.selectAll('.dept');if(now)sel.attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s));else sel.transition().duration(430).attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s));return}brandLine.style.opacity='1';legend.innerHTML=legendHTML(m[3]);if(s===7){mapKicker.textContent='';mapTitle.textContent='';mapNote.textContent='';applyFinalState(true,now);return}applyFinalState(false,now);mapKicker.textContent=m[0];mapTitle.textContent=m[1];mapNote.textContent=m[2]||'';const sel=svg.selectAll('.dept');if(now)sel.attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s));else sel.transition().duration(430).attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s))}
-const steps=[...document.querySelectorAll('.story-step[data-step]')];const io=new IntersectionObserver(entries=>{const x=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(x){const s=+x.target.dataset.step;setStep(s);document.getElementById('scrollCue').classList.toggle('is-hidden',s>0)}},{threshold:[.38,.52,.66]});steps.forEach(s=>io.observe(s));
-let resizeRAF=0;function scheduleResize(){cancelAnimationFrame(resizeRAF);resizeRAF=requestAnimationFrame(()=>{resizeMap()})}
-addEventListener('resize',scheduleResize,{passive:true});addEventListener('orientationchange',()=>setTimeout(scheduleResize,120),{passive:true});if(window.visualViewport)visualViewport.addEventListener('resize',scheduleResize,{passive:true});if('ResizeObserver' in window)new ResizeObserver(scheduleResize).observe(document.querySelector('.visual'));
-fetchAny([DANE,FALLBACK]).then(g=>{geojson=g;initMap();fetchAny([LATAM,LATAM_FALLBACK]).then(l=>{latamGeo=l;initLatamLayer()}).catch(e=>console.warn('No fue posible precargar la geometría regional:',e))}).catch(e=>{errorBox.style.display='block';errorBox.textContent='No fue posible cargar el mapa: '+e.message});
+function showTip(e,d){if(isStackedLayout())return;if(activeStep===7){tip.innerHTML='<b>Colombia</b>';tip.style.left=e.clientX+'px';tip.style.top=e.clientY+'px';tip.style.opacity=1;return}const n=d.__name||'San Andrés y Providencia';tip.innerHTML=`<b>${n}</b><span>${describe(n,activeStep)}</span>`;tip.style.left=e.clientX+'px';tip.style.top=e.clientY+'px';tip.style.opacity=1}
+function showLatamTip(e,d){if(isStackedLayout())return;const n=d.__country;tip.innerHTML=`<b>${n}</b>`;tip.style.left=e.clientX+'px';tip.style.top=e.clientY+'px';tip.style.opacity=1}
+function motionDuration(ms,now){return(now||window.matchMedia('(prefers-reduced-motion:reduce)').matches)?0:ms}
+function applyFinalState(final,now=false){
+  const dur=motionDuration(1100,now);
+  if(final){
+    gLatam.interrupt().transition().duration(dur).style('opacity',regionalReady?1:0);
+    gInsets.interrupt().transition().duration(Math.min(dur,450)).style('opacity',0);
+    gFinalArch.select('.arch-final').attr('fill','#1b4d6a');gFinalArch.interrupt().transition().delay(dur?350:0).duration(dur?550:0).style('opacity',regionalReady?1:0);
+    const t=gMain.interrupt().transition().duration(dur).ease(d3.easeCubicInOut);
+    if(finalTransform)t.attr('transform',finalTransform);t.selectAll('.dept.main').attr('fill','#1b4d6a');
+    mapUI.style.opacity='0';
+  }else{
+    gLatam.interrupt().transition().duration(motionDuration(360,now)).style('opacity',0);
+    gFinalArch.interrupt().transition().duration(motionDuration(250,now)).style('opacity',0);
+    gInsets.interrupt().transition().delay(now?0:300).duration(motionDuration(350,now)).style('opacity',1);
+    gMain.interrupt().transition().duration(dur).ease(d3.easeCubicInOut).attr('transform',null);mapUI.style.opacity='1';
+  }
+}
+function syncVisualReady(){visualWrap.classList.toggle('is-ready',mapReady&&(desiredStep!==7||regionalReady))}
+function renderStep(s,now=false,force=false){
+  if(!mapReady)return;
+  if(!force&&renderedStep===s)return;
+  activeStep=s;renderedStep=s;const m=META[s];
+  if(s===0){
+    legend.innerHTML='';mapKicker.textContent='';mapTitle.textContent='';mapNote.textContent='';applyFinalState(false,now);mapUI.style.opacity='0';brandLine.style.opacity='0';
+    const sel=svg.selectAll('.dept:not(.arch-final)');if(motionDuration(430,now)===0)sel.attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s));else sel.interrupt().transition().duration(430).attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s));return;
+  }
+  brandLine.style.opacity='1';legend.innerHTML=legendHTML(m[3]);
+  if(s===7){mapKicker.textContent='';mapTitle.textContent='';mapNote.textContent='';applyFinalState(true,now);return}
+  applyFinalState(false,now);mapKicker.textContent=m[0];mapTitle.textContent=m[1];mapNote.textContent=m[2]||'';
+  const sel=svg.selectAll('.dept:not(.arch-final)'),dur=motionDuration(430,now);if(dur===0)sel.attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s));else sel.interrupt().transition().duration(dur).attr('fill',d=>fill(d.__name||'San Andrés y Providencia',s));
+}
+function requestStep(s,now=false){
+  if(!Number.isFinite(s)||s<0||s>=META.length)return;
+  const changed=s!==desiredStep;desiredStep=s;scrollCue.classList.toggle('is-hidden',s>0);syncVisualReady();
+  if(mapReady&&(changed||renderedStep!==s||now))renderStep(s,now);
+}
+const steps=[...document.querySelectorAll('.story-step[data-step]')];
+function readingAnchorY(){
+  const H=Math.max(1,window.innerHeight);
+  if(!isStackedLayout())return H*.50;
+  const mapH=Math.min(H,visualWrap.getBoundingClientRect().height||0),free=Math.max(1,H-mapH);
+  return mapH+free*.42;
+}
+function detectActiveStep(){
+  const anchor=readingAnchorY();let best=steps[0],bestDist=Infinity;
+  for(const el of steps){const r=el.getBoundingClientRect();if(r.top<=anchor&&r.bottom>=anchor)return +el.dataset.step;const d=Math.min(Math.abs(r.top-anchor),Math.abs(r.bottom-anchor));if(d<bestDist){bestDist=d;best=el}}
+  return +(best?.dataset.step||0);
+}
+let scrollRAF=0;function scheduleStepCheck(now=false){
+  if(now){cancelAnimationFrame(scrollRAF);scrollRAF=0;requestStep(detectActiveStep(),true);return}
+  if(scrollRAF)return;scrollRAF=requestAnimationFrame(()=>{scrollRAF=0;requestStep(detectActiveStep())});
+}
+addEventListener('scroll',()=>scheduleStepCheck(),{passive:true});
+let resizeRAF=0;function scheduleResize(){
+  cancelAnimationFrame(resizeRAF);resizeRAF=requestAnimationFrame(()=>{resizeMap(false);scheduleStepCheck(true)});
+}
+addEventListener('resize',scheduleResize,{passive:true});addEventListener('orientationchange',()=>setTimeout(scheduleResize,120),{passive:true});
+if('ResizeObserver' in window)new ResizeObserver(()=>scheduleResize()).observe(document.querySelector('.visual'));
+scheduleStepCheck(true);
+
+// Colombia and the regional layer load in parallel. The visible map is revealed only after the current scroll state can be rendered correctly.
+const colombiaPromise=fetchAny([DANE,FALLBACK]);
+const regionalPromise=fetchAny([LATAM,LATAM_FALLBACK]);
+regionalPromise.then(l=>{latamGeo=l;if(mapReady)initLatamLayer()}).catch(e=>console.warn('No fue posible precargar la geometría regional:',e));
+colombiaPromise.then(g=>{geojson=g;initMap()}).catch(e=>{errorBox.style.display='block';errorBox.textContent='No fue posible cargar el mapa: '+e.message});
 </script>
 </body>
 </html>
